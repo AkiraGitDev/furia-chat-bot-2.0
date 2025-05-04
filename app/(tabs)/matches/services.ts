@@ -1,20 +1,25 @@
 import axios from 'axios';
+import Constants from 'expo-constants';
 
 const API_URL = 'https://api.pandascore.co/csgo/matches/upcoming';
-const TOKEN = 'pObNGE9YhXTZMZGnFeTnFn2W-dUIa3vy6dW_2Ee6TepuKLByRgg'; // depois você pode mover para .env
+const TOKEN = Constants.expoConfig?.extra?.pandascoreToken || '';
 
 export async function getFuriaUpcomingMatches() {
   try {
     const response = await axios.get(API_URL, {
-      headers: {
-        Authorization: `Bearer ${TOKEN}`,
-      },
       params: {
-        'filter[opponents]': 128, // ID da FURIA
+        filter: {
+          opponent_id: 129384, // ID da FURIA no PandaScore
+          videogame_title: 'cs-2' // Filtro específico para CS2
+        },
         sort: 'begin_at',
+        per_page: 10
       },
+      headers: {
+        'Authorization': `Bearer ${TOKEN}`
+      }
     });
-
+    
     return response.data;
   } catch (error) {
     console.error('Erro ao buscar partidas da FURIA:', error);

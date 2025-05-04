@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { getFuriaUpcomingMatches } from '@/app/(tabs)/matches/services';
+import MatchCard from '@/components/MatchCard';
 
 interface Partida {
   id: string;
@@ -36,10 +37,13 @@ export default function MatchesScreen() {
   }, []);
 
   const renderPartida = ({ item }: { item: Partida }) => (
-    <View style={styles.partidaCard}>
-      <Text style={styles.partidaTitulo}>{item.titulo}</Text>
-      <Text style={styles.partidaInfo}>{item.data} - {item.horario}</Text>
-    </View>
+    <MatchCard
+      matchId={item.id}
+      team1="FURIA"
+      team2={item.titulo.replace('FURIA', '').replace('vs', '').trim()}
+      date={`${item.data} - ${item.horario}`}
+      // Adicionar um onPress para detalhes futuros
+    />
   );
 
   if (loading) {

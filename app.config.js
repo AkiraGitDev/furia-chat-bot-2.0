@@ -1,0 +1,43 @@
+import 'dotenv/config';
+
+export default {
+  expo: {
+    name: "exit",
+    slug: "exit",
+    version: "1.0.0",
+    orientation: "portrait",
+    icon: "./assets/images/Furia_Esports_logo.png",
+    scheme: "exit",
+    userInterfaceStyle: "automatic",
+    newArchEnabled: true,
+    splash: {
+      image: "./assets/images/Furia_Esports_logo.png",
+      resizeMode: "contain",
+      backgroundColor: "#ffffff"
+    },
+    ios: {
+      supportsTablet: true
+    },
+    android: {
+      adaptiveIcon: {
+        foregroundImage: "./assets/images/adaptive-icon.png",
+        backgroundColor: "#ffffff"
+      },
+      edgeToEdgeEnabled: true
+    },
+    web: {
+      bundler: "metro",
+      output: "static",
+      favicon: "./assets/images/favicon.png"
+    },
+    plugins: [
+      "expo-router"
+    ],
+    experiments: {
+      typedRoutes: true
+    },
+    extra: {
+      pandascoreToken: process.env.PANDASCORE_TOKEN
+    }
+  }
+};
