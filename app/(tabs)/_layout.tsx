@@ -47,6 +47,7 @@ export default function TabLayout() {
         name="home"
         options={{
           title: 'Início',
+          headerTitle: '',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
       />
@@ -54,6 +55,7 @@ export default function TabLayout() {
         name="matches/index"
         options={{
           title: 'Partidas',
+          headerTitle: '',
           tabBarIcon: ({ color }) => <TabBarIcon name="gamepad" color={color} />,
         }}
       />
@@ -61,6 +63,7 @@ export default function TabLayout() {
         name="chat/index"
         options={{
           title: 'Chat',
+          headerTitle: '',
           tabBarIcon: ({ color }) => <TabBarIcon name="comments" color={color} />,
         }}
       />
@@ -68,6 +71,7 @@ export default function TabLayout() {
         name="profile/index"
         options={{
           title: 'Perfil',
+          headerTitle: '',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />

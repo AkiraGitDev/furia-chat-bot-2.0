@@ -8,6 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 import { Colors } from '@/constants/Colors';
+import { Ionicons } from '@expo/vector-icons';
 
 interface ChatRoomProps {
   roomId: string;
@@ -73,7 +74,7 @@ export default function ChatRoom({ roomId, userId, username }: ChatRoomProps) {
           style={styles.sendButton}
           onPress={handleSend}
         >
-          <Text style={styles.sendButtonText}>Enviar</Text>
+          <Ionicons name="send" size={24} color= {Colors.secondary} />
         </TouchableOpacity>
       </View>
     </View>

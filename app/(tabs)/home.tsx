@@ -7,8 +7,11 @@ import {
     TouchableOpacity,
   } from 'react-native';
   import { Colors } from '@/constants/Colors';
+  import { useRouter } from 'expo-router';
   
   export default function HomeScreen() {
+    const router = useRouter();
+  
     return (
       <View style={styles.container}>
         <ScrollView style={styles.scrollView}>
@@ -23,12 +26,18 @@ import {
           </View>
   
           <View style={styles.content}>
-            <TouchableOpacity style={styles.card}>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => router.push('/matches')}
+            >
               <Text style={styles.cardTitle}>Próximas Partidas</Text>
               <Text style={styles.cardText}>Confira os próximos jogos da FURIA</Text>
             </TouchableOpacity>
   
-            <TouchableOpacity style={styles.card}>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => router.push('/chat')}
+            >
               <Text style={styles.cardTitle}>Chat da Comunidade</Text>
               <Text style={styles.cardText}>Interaja com outros fãs da FURIA</Text>
             </TouchableOpacity>
