@@ -31,6 +31,13 @@ export default function TabLayout() {
             paddingBottom: 4,
             paddingTop: 4,
           },
+          web: {
+            backgroundColor: Colors.background,
+            borderTopColor: 'rgba(255, 255, 255, 0.1)',
+            height: 60,
+            paddingBottom: 4,
+            paddingTop: 4,
+          },
         }),
         headerStyle: {
           backgroundColor: Colors.background,
