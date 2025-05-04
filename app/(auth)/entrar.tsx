@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 
@@ -8,6 +8,11 @@ export default function EntrarScreen() {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require('@/assets/images/Furia_Esports_logo.png')}
+        style={styles.logo}
+        resizeMode="contain"
+      />
       <Text style={styles.title}>Bem-vindo!</Text>
       <Text style={styles.subtitle}>Acesse sua conta ou registre-se para começar.</Text>
       <TouchableOpacity
@@ -33,6 +38,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 24,
+  },
+  logo: {
+    width: 120,
+    height: 120,
+    marginBottom: 16,
   },
   title: {
     fontSize: 32,
