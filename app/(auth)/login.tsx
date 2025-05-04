@@ -8,19 +8,38 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { useRouter } from 'expo-router';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { signIn } = useAuth();
 
-  const handleLogin = () => {
-    // Implementar lógica de login aqui
-    console.log('Login:', email, password);
-    router.push('/(tabs)/home');
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const success = await signIn(email, password);
+      if (!success) {
+        Alert.alert('Erro', 'Email ou senha incorretos');
+      }
+    } catch (error) {
+      Alert.alert('Erro', 'Ocorreu um erro ao fazer login');
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -51,8 +70,23 @@ export default function LoginScreen() {
             onChangeText={setPassword}
           />
 
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Entrar</Text>
+          <TouchableOpacity 
+            style={styles.button} 
+            onPress={handleLogin}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <ActivityIndicator color={Colors.secondary} />
+            ) : (
+              <Text style={styles.buttonText}>Entrar</Text>
+            )}
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            style={styles.linkButton}
+            onPress={() => router.push('/(auth)/register')}
+          >
+            <Text style={styles.linkText}>Não tem uma conta? Registre-se</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -102,5 +136,14 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  linkButton: {
+    marginTop: 20,
+    padding: 10,
+  },
+  linkText: {
+    color: Colors.text,
+    fontSize: 14,
+    textDecorationLine: 'underline',
   },
 });

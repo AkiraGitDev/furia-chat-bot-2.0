@@ -5,10 +5,34 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { Colors } from '@/constants/Colors';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function ProfileScreen() {
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    Alert.alert(
+      'Sair',
+      'Tem certeza que deseja sair?',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Sim',
+          onPress: async () => {
+            await signOut();
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -19,8 +43,8 @@ export default function ProfileScreen() {
               source={{ uri: 'https://via.placeholder.com/100' }}
             />
           </View>
-          <Text style={styles.username}>Nome do Usuário</Text>
-          <Text style={styles.email}>usuario@email.com</Text>
+          <Text style={styles.username}>{user?.name || 'Usuário'}</Text>
+          <Text style={styles.email}>{user?.email || 'usuario@email.com'}</Text>
         </View>
 
         <View style={styles.section}>
@@ -33,6 +57,12 @@ export default function ProfileScreen() {
           </TouchableOpacity>
           <TouchableOpacity style={styles.menuItem}>
             <Text style={styles.menuText}>Ajuda</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.menuItem, styles.logoutButton]}
+            onPress={handleSignOut}
+          >
+            <Text style={[styles.menuText, styles.logoutText]}>Sair</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -92,5 +122,12 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 16,
     color: Colors.text,
+  },
+  logoutButton: {
+    backgroundColor: 'rgba(255, 0, 0, 0.1)',
+    marginTop: 20,
+  },
+  logoutText: {
+    color: '#FF6B6B',
   },
 });

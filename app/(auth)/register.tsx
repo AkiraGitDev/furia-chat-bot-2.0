@@ -9,21 +9,51 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { useRouter } from 'expo-router';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function RegisterScreen() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { signUp } = useAuth();
 
-  const handleRegistro = () => {
-    // Implementar lógica de registro aqui
-    console.log('Registro:', { nome, email, senha, confirmarSenha });
-    router.push('/(tabs)/home');
+  const handleRegistro = async () => {
+    // Validações básicas
+    if (!nome || !email || !senha || !confirmarSenha) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos');
+      return;
+    }
+
+    if (senha !== confirmarSenha) {
+      Alert.alert('Erro', 'As senhas não coincidem');
+      return;
+    }
+
+    if (senha.length < 6) {
+      Alert.alert('Erro', 'A senha deve ter pelo menos 6 caracteres');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const success = await signUp(nome, email, senha);
+      if (!success) {
+        Alert.alert('Erro', 'Este email já está em uso');
+      }
+    } catch (error) {
+      Alert.alert('Erro', 'Ocorreu um erro ao criar a conta');
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -75,8 +105,23 @@ export default function RegisterScreen() {
               onChangeText={setConfirmarSenha}
             />
 
-            <TouchableOpacity style={styles.button} onPress={handleRegistro}>
-              <Text style={styles.buttonText}>Criar Conta</Text>
+            <TouchableOpacity 
+              style={styles.button} 
+              onPress={handleRegistro}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator color={Colors.secondary} />
+              ) : (
+                <Text style={styles.buttonText}>Criar Conta</Text>
+              )}
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={styles.linkButton}
+              onPress={() => router.push('/(auth)/login')}
+            >
+              <Text style={styles.linkText}>Já tem uma conta? Faça login</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -131,5 +176,14 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  linkButton: {
+    marginTop: 20,
+    padding: 10,
+  },
+  linkText: {
+    color: Colors.text,
+    fontSize: 14,
+    textDecorationLine: 'underline',
   },
 });
